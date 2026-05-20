@@ -1,4 +1,4 @@
-#include "compress.h"
+#include "encodeh.h"
 
 /* Creates a new node */
 t_node  *new_node(char c, int is_end_node, unsigned int occurrences)
@@ -9,7 +9,7 @@ t_node  *new_node(char c, int is_end_node, unsigned int occurrences)
 	if (node == NULL)
 		return (NULL);
 	node->c = c;
-	node->code = 0;
+	node->code[0] = END_OF_CODE;
 	node->occurrences = occurrences;
 	node->is_end_node = is_end_node;
 	node->next = NULL;

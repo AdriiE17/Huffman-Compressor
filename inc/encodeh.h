@@ -1,9 +1,10 @@
-#ifndef COMPRESS_H
-# define COMPRESS_H
+#ifndef ENCODEH_H
+# define ENCODEH_H
 
 # define END_NODE 1
 # define NOT_END_NODE 0
 # define TOTAL_CHARACTERS 256
+# define END_OF_CODE 2
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -11,8 +12,8 @@
 
 typedef struct	s_node
 {
-	char			c;
-	char			code;
+	unsigned char	c;
+	unsigned char	code[TOTAL_CHARACTERS - 1];
 	int				is_end_node;
 	unsigned int	occurrences;
 	struct s_node	*next;
@@ -20,9 +21,16 @@ typedef struct	s_node
 	struct s_node	*end_nodes[TOTAL_CHARACTERS];
 }	t_node;
 
+/* Compressing */
 int		read_file(t_node **nodes, const char *name_file);
-t_node	*find_char(t_node **nodes, char byte);
+t_node	*find_char(t_node **nodes, char c);
 void	huffman(t_node **nodes);
+size_t	get_last_bit_position(unsigned char code[]);
+void	print_code(unsigned char code[]);
+int		write_file(t_node **nodes, const char *file_name);
+
+/* Decompressing */
+
 
 /* Node management */
 t_node  *new_node(char c, int is_end_node, unsigned int occurrences);
