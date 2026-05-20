@@ -14,9 +14,18 @@ typedef struct	s_node
 	char			code;
 	int				is_end_node;
 	unsigned int	occurrences;
+	struct s_node	*next;
+	struct s_node	*previous;
 }	t_node;
 
-int     read_file(t_node **nodes, size_t *size, const char *name_file);
-int     find_char(t_node *nodes, size_t size, char byte);
+int		read_file(t_node **nodes, const char *name_file);
+t_node	*find_char(t_node **nodes, char byte);
 
+/* Node management */
+t_node  *new_node(char c, int is_end_node, unsigned int occurrences);
+void    add_node(t_node **nodes, t_node *new);
+t_node  *last_node(t_node *nodes);
+void    delete_node(t_node **nodes, t_node *node);
+//size_t  nodes_size(t_node *node);
+void	clear_nodes(t_node **nodes);
 #endif
