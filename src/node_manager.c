@@ -9,10 +9,16 @@ t_node  *new_node(char c, int is_end_node, unsigned int occurrences)
 	if (node == NULL)
 		return (NULL);
 	node->c = c;
-	node->is_end_node = is_end_node;
+	node->code = 0;
 	node->occurrences = occurrences;
+	node->is_end_node = is_end_node;
 	node->next = NULL;
 	node->previous = NULL;
+	if (is_end_node == END_NODE)
+	{
+		node->end_nodes[0] = node;
+		node->end_nodes[1] = NULL;
+	}
 	return (node);
 }
 
@@ -64,27 +70,19 @@ void    delete_node(t_node **nodes, t_node *node)
 			node->previous->next = NULL;
 		else
 			*nodes = NULL;
-		free(node);
 	}
 }
 
 /* Given an element of a node list, gives the number of elements from that element (or the size of the list if that element is the first one) */
-/*size_t  nodes_size(t_node *node)
+size_t  nodes_size(t_node *node)
 {
-        size_t  size;
+	size_t  size;
 
-        size = 0;
-        while (node)
-        {
-                node = node->next;
-                size++;
-        }
-        return (size);
-}*/
-
-/* Deletes a node list */
-void	clear_nodes(t_node **nodes)
-{
-	while (*nodes)
-		delete_node(nodes, *nodes);
+	size = 0;
+	while (node)
+	{
+		node = node->next;
+		size++;
+	}
+	return (size);
 }
