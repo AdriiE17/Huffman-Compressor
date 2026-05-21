@@ -1,7 +1,7 @@
 #include "encodeh.h"
 
 /* Creates a new node */
-t_node  *new_node(char c, int is_end_node, unsigned int occurrences)
+t_node  *new_node(char c, unsigned int occurrences)
 {
 	t_node  *node;
 
@@ -9,34 +9,37 @@ t_node  *new_node(char c, int is_end_node, unsigned int occurrences)
 	if (node == NULL)
 		return (NULL);
 	node->c = c;
-	node->code[0] = END_OF_CODE;
 	node->occurrences = occurrences;
-	node->is_end_node = is_end_node;
 	node->next = NULL;
 	node->previous = NULL;
-	if (is_end_node == END_NODE)
-	{
-		node->end_nodes[0] = node;
-		node->end_nodes[1] = NULL;
-	}
+	node->next_end = NULL;
+	node->previous_end = NULL;
+	node->left = NULL;
+	node->right = NULL;
+	node->parent = NULL;
 	return (node);
 }
 
 /* Addes a node at the end of an existing node list */
-void    add_node(t_node **nodes, t_node *new)
+void    add_node(t_node **head, int is_end_node, t_node *new)
 {
 	t_node  *last;
 
-	if (nodes)
+	if (head)
 	{
-		if (*nodes)
+		if (*head)
 		{
-			last = last_node(*nodes);
+			last = last_node(*head);
 			last->next = new;
 			new->previous = last;
+			if (is_end_node == END_NODE)
+			{
+				last->next_end = new;
+				new->previous_end = last;
+			}
 		}
 		else
-			*nodes = new;
+			*head = new;
 	}
 }
 
@@ -51,10 +54,10 @@ t_node  *last_node(t_node *node)
 	return (node);
 }
 
-/* Deletes a given node of the node list */
-void    delete_node(t_node **nodes, t_node *node)
+/* Deletes a given node of the node list (it doesn't free its memory) */
+void    delete_node(t_node **head, t_node *node)
 {
-	if (nodes && *nodes && node)
+	if (head && *head && node)
 	{
 		if (node->next && node->previous)
 		{
@@ -63,13 +66,13 @@ void    delete_node(t_node **nodes, t_node *node)
 		}
 		else if (node->next && !node->previous)
 		{
-			*nodes = node->next;
+			*head = node->next;
 			node->next->previous = NULL;
 		}
 		else if (!node->next && node->previous)
 			node->previous->next = NULL;
 		else
-			*nodes = NULL;
+			*head = NULL;
 	}
 }
 
@@ -85,4 +88,14 @@ size_t  nodes_size(t_node *node)
 		size++;
 	}
 	return (size);
+}
+
+// Frees the whole tree
+void	free_tree(t_node *head)
+{
+	if (head->left != NULL)
+		free_tree(head->left);
+	if (head->right != NULL)
+		free_tree(head->right);
+	free(head);
 }
