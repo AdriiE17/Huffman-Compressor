@@ -1,7 +1,7 @@
 #include "encodeh.h"
 
 /* Creates a new node */
-t_node  *new_node(char c, unsigned int occurrences)
+t_node  *new_node(unsigned char c, unsigned int occurrences)
 {
 	t_node  *node;
 
@@ -93,9 +93,12 @@ size_t  nodes_size(t_node *node)
 // Frees the whole tree
 void	free_tree(t_node *head)
 {
-	if (head->left != NULL)
-		free_tree(head->left);
-	if (head->right != NULL)
-		free_tree(head->right);
-	free(head);
+	if (head != NULL)
+	{
+		if (head->left != NULL)
+			free_tree(head->left);
+		if (head->right != NULL)
+			free_tree(head->right);
+		free(head);
+	}
 }

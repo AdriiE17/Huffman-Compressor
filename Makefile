@@ -4,7 +4,7 @@ OBJ_DIR = obj
 LIB_DIR = lib
 INC_DIR = inc
 
-SRC = $(SRC_DIR)/main.c $(SRC_DIR)/node_manager.c $(SRC_DIR)/compress.c
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/node_manager.c $(SRC_DIR)/compress.c $(SRC_DIR)/decompress.c
 
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 INC = -I$(INC_DIR)
