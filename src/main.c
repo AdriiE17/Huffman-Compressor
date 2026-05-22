@@ -7,6 +7,7 @@ int	main(int argc, char *argv[])
 
 	if (argc < 3)
 		return (write(2,"Usage: ./encodeh -c <file> | -d <file>\n",40), 1);
+
 	head = NULL;
 	while ((opt = getopt(argc, argv, "c:d:")) != -1)
 	{
